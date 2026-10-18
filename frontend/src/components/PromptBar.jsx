@@ -359,6 +359,13 @@ export default function PromptBar({
     latest.current.onEffortChange?.(efforts[next]);
   };
 
+  const attachFiles = () => {
+    Promise.resolve(latest.current.onAttach?.()).then(files => {
+      if (!files) return;
+      setAttachments(a => [...a, ...(Array.isArray(files) ? files : [files])]);
+    });
+  };
+
   const effortFromPointer = e => {
     const rect = e.currentTarget.getBoundingClientRect();
     const k = (e.clientX - rect.left - EDGE) / Math.max(1, rect.width - 2 * EDGE);
@@ -397,10 +404,7 @@ export default function PromptBar({
     const head = token ? draft.slice(0, token.start) : draft;
     if (row.attach) {
       setDraft(head);
-      Promise.resolve(latest.current.onAttach?.()).then(files => {
-        if (!files) return;
-        setAttachments(a => [...a, ...(Array.isArray(files) ? files : [files])]);
-      });
+      attachFiles();
     } else if (open === 'at') {
       setDraft(`${head}@${row.name} `);
     } else {
@@ -644,8 +648,7 @@ export default function PromptBar({
               setModelOpen(false);
               setEffortOpen(false);
               setActive(0);
-              setPlusOpen(v => !v);
-              focusInput();
+              attachFiles();
             }}
           >
             <HugeiconsIcon icon={PlusSignIcon} size={16} strokeWidth={2} />
