@@ -21,7 +21,7 @@ class LocalGemmaClient:
     """Call a model already loaded in LM Studio; never accepts remote URLs."""
     def __init__(self, model: str | None = None, base_url: str | None = None,
                  timeout: float = 120.0, temperature: float = 0.1,
-                 max_tokens: int = 800) -> None:
+                 max_tokens: int = 1600) -> None:
         self.base_url = _validate_local_url(base_url or os.getenv("LM_STUDIO_BASE_URL", DEFAULT_BASE_URL))
         self.model = model or os.getenv("LM_STUDIO_MODEL", "local-model")
         self.timeout = timeout
@@ -45,6 +45,8 @@ class LocalGemmaClient:
         try:
             with urlopen(request, timeout=self.timeout) as response:
                 result = json.loads(response.read().decode("utf-8"))
+                print("DEBUG finish_reason:", result.get("choices", [{}])[0].get("finish_reason"))
+                print("DEBUG usage:", result.get("usage"))
         except HTTPError as exc:
             raise RuntimeError(f"LM Studio returned HTTP {exc.code}; check that a model is loaded and the local server is running.") from exc
         except URLError as exc:
