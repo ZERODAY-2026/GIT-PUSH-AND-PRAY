@@ -1,4 +1,4 @@
-# Legal Triage
+# Juris Guide
 
 Privacy-first, local legal document analysis with a React frontend and a
 Python/FastAPI backend. Documents, extracted text, embeddings, retrieval, and

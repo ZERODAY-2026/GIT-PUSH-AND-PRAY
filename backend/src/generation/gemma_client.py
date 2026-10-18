@@ -21,7 +21,7 @@ class LocalGemmaClient:
     """Call a Gemma model already loaded in LM Studio or Ollama; never accepts remote URLs."""
     def __init__(self, model: str | None = None, base_url: str | None = None,
                  timeout: float = 120.0, temperature: float = 0.1,
-                 max_tokens: int = 2400) -> None:
+                 max_tokens: int = 800) -> None:
         self.base_url = _validate_local_url(base_url or os.getenv("GEMMA_BASE_URL") or os.getenv("LM_STUDIO_BASE_URL", DEFAULT_BASE_URL))
         self.model = model or os.getenv("GEMMA_MODEL") or os.getenv("LM_STUDIO_MODEL", "local-model")
         self.timeout = timeout

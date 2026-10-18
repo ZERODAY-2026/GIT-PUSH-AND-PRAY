@@ -54,6 +54,13 @@ def test_prompt_has_source_provenance_and_grounding_rules():
 def test_prompt_rejects_empty_evidence():
     with pytest.raises(ValueError): build_messages("Question?", [])
 
+def test_prompt_budget_truncates_large_retrieved_evidence():
+    large_chunk = {**CHUNK, "text": "contract obligation " * 5000}
+    messages = build_messages("What is required?", [large_chunk] * 5)
+    combined = "\n".join(message["content"] for message in messages)
+    assert len(combined) <= 9000
+    assert "[TRUNCATED]" in combined
+
 def test_remote_llm_url_is_rejected():
     with pytest.raises(ValueError): LocalGemmaClient(base_url="https://example.com/v1")
 
