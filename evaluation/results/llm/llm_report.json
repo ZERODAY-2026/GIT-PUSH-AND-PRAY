@@ -1,0 +1,59 @@
+{
+  "total_examples_evaluated": 10,
+  "mean_token_f1": 0.0877,
+  "mean_key_term_recall": 0.9658,
+  "exact_match_rate": 0.0,
+  "mean_groundedness_score": 0.096,
+  "mean_unsupported_claim_rate": 0.904,
+  "category_breakdown": {
+    "Document Name": {
+      "total_examples": 2,
+      "avg_f1": 0.0217,
+      "avg_groundedness": 0.0,
+      "avg_unsupported_rate": 1.0
+    },
+    "Parties": {
+      "total_examples": 2,
+      "avg_f1": 0.0108,
+      "avg_groundedness": 0.0,
+      "avg_unsupported_rate": 1.0
+    },
+    "Expiration Date": {
+      "total_examples": 1,
+      "avg_f1": 0.0746,
+      "avg_groundedness": 0.0909,
+      "avg_unsupported_rate": 0.9091
+    },
+    "Governing Law": {
+      "total_examples": 1,
+      "avg_f1": 0.1401,
+      "avg_groundedness": 0.2,
+      "avg_unsupported_rate": 0.8
+    },
+    "Warranty Duration": {
+      "total_examples": 1,
+      "avg_f1": 0.2911,
+      "avg_groundedness": 0.2857,
+      "avg_unsupported_rate": 0.7143
+    },
+    "Insurance": {
+      "total_examples": 1,
+      "avg_f1": 0.092,
+      "avg_groundedness": 0.1111,
+      "avg_unsupported_rate": 0.8889
+    },
+    "Agreement Date": {
+      "total_examples": 1,
+      "avg_f1": 0.0353,
+      "avg_groundedness": 0.0,
+      "avg_unsupported_rate": 1.0
+    },
+    "Effective Date": {
+      "total_examples": 1,
+      "avg_f1": 0.1791,
+      "avg_groundedness": 0.2727,
+      "avg_unsupported_rate": 0.7273
+    }
+  },
+  "model_name": "local-model"
+}

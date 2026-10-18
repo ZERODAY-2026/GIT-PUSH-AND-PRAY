@@ -1,0 +1,41 @@
+{
+  "total_examples_evaluated": 5,
+  "overall_end_to_end_accuracy": 0.0,
+  "positive_clause_recall": 1.0,
+  "silence_accuracy": 0.0,
+  "failure_stage_distribution": {
+    "EXTRACTION FAILURE": 0,
+    "RETRIEVAL FAILURE": 2,
+    "LLM FAILURE": 0,
+    "GROUNDING FAILURE": 3,
+    "TECHNICAL FAILURE": 0,
+    "UNKNOWN / REQUIRES REVIEW": 0
+  },
+  "category_breakdown": {
+    "Document Name": {
+      "total_examples": 1,
+      "success_rate": 0.0,
+      "retrieval_recall": 1.0
+    },
+    "Parties": {
+      "total_examples": 1,
+      "success_rate": 0.0,
+      "retrieval_recall": 1.0
+    },
+    "Agreement Date": {
+      "total_examples": 1,
+      "success_rate": 0.0,
+      "retrieval_recall": 1.0
+    },
+    "Effective Date": {
+      "total_examples": 1,
+      "success_rate": 0.0,
+      "retrieval_recall": 1.0
+    },
+    "Expiration Date": {
+      "total_examples": 1,
+      "success_rate": 0.0,
+      "retrieval_recall": 1.0
+    }
+  }
+}

@@ -106,13 +106,19 @@ def _load_query_components() -> tuple[FAISSVectorStore, LocalEmbedder]:
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
-    """Return API and index availability without loading the embedding model."""
+    """Return API, index availability, and local Gemma server reachability."""
     index_exists = (VECTOR_STORE_DIR / "index.faiss").exists()
+    client = LocalGemmaClient()
+    conn_info = client.check_connection()
     return {
         "status": "ok",
         "index_ready": index_exists,
-        "llm_base_url": os.getenv("LM_STUDIO_BASE_URL", "http://127.0.0.1:1234/v1"),
+        "llm_base_url": client.base_url,
+        "llm_model": client.model,
+        "llm_reachable": conn_info.get("reachable", False),
+        "available_models": conn_info.get("models", []),
     }
+
 
 
 @app.post("/api/documents/upload")
