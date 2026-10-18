@@ -1,0 +1,29 @@
+# ── Runtime requirement ────────────────────────────────────────────────────
+# Python 3.11 is recommended.  PyMuPDF pre-built wheels are available for
+# CPython 3.8–3.13 (Windows/macOS/Linux).  Python 3.14 (MSYS2) requires
+# building from source which needs cmake + ninja — use CPython 3.11 instead.
+#
+# ── Module 1 dependencies ──────────────────────────────────────────────────
+# Local PDF text extraction pipeline
+# All libraries run entirely on-device.  No cloud services required.
+
+# PDF parsing — https://pymupdf.readthedocs.io/
+pymupdf>=1.24.0
+
+# ── Retrieval & Indexing dependencies ──────────────────────────────────────
+# Local embeddings & vector indexing (Modules 2–5)
+sentence-transformers>=3.0.0
+faiss-cpu>=1.8.0
+
+# ── Testing ────────────────────────────────────────────────────────────────
+pytest>=8.0.0
+
+# ── Future modules (NOT installed yet — listed for reference only) ──────────
+# Uncomment when the corresponding pipeline stage is implemented:
+#
+# Local OCR (scanned PDFs)
+# pytesseract>=0.3.10
+# Pillow>=10.0.0
+#
+# Local LLM inference
+# llama-cpp-python>=0.2.0   # or use ollama / Hugging Face transformers

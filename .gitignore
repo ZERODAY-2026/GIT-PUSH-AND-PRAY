@@ -1,0 +1,46 @@
+# .gitignore for localize-legal-RAG
+
+# ── Virtual environment ─────────────────────────────────────────────────────
+.venv/
+.venv311/
+env/
+ENV/
+
+# ── Python cache ────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# ── pytest / coverage ───────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.cache/
+
+# ── Legal documents — NEVER commit real documents to version control ─────────
+# Input PDFs may contain sensitive private information.
+data/input/*.pdf
+data/input/*.PDF
+
+# Extracted text outputs also contain sensitive content.
+data/extracted/*.txt
+data/extracted/*.json
+
+# Processed and chunked text
+data/processed/*.json
+
+# Local vector store indices and metadata
+data/vector_store/*.faiss
+data/vector_store/*.json
+!data/vector_store/.gitkeep
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
