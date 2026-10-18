@@ -115,7 +115,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-base);
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: 16px;
   overflow: hidden;
 }
 
@@ -191,7 +191,7 @@ html, body {
 }
 
 .brand-name {
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
@@ -199,7 +199,7 @@ html, body {
 }
 
 .brand-sub {
-  font-size: 10.5px;
+  font-size: 12px;
   color: var(--text-muted);
   letter-spacing: 0;
 }
@@ -230,7 +230,7 @@ html, body {
   border: 1px solid var(--border-bright);
   background: transparent;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -252,7 +252,7 @@ html, body {
 
 /* ── Sidebar section header ── */
 .sidebar-section-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.7px;
@@ -271,7 +271,7 @@ html, body {
 }
 
 .doc-card-empty {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.5;
   padding: 4px 0;
@@ -282,7 +282,7 @@ html, body {
 .doc-file-info { flex: 1; min-width: 0; }
 
 .doc-filename {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -292,7 +292,7 @@ html, body {
 }
 
 .doc-meta {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-top: 3px;
   white-space: nowrap;
@@ -306,7 +306,7 @@ html, body {
   gap: 5px;
   padding: 2px 8px;
   border-radius: 99px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   background: var(--green-dim);
   color: var(--green);
@@ -418,7 +418,7 @@ html, body {
 }
 
 .topbar-title {
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.01em;
@@ -434,7 +434,7 @@ html, body {
   border-radius: 99px;
   border: 1px solid var(--border-bright);
   background: transparent;
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
   white-space: nowrap;
@@ -517,7 +517,7 @@ html, body {
 }
 
 .empty-heading {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.03em;
@@ -526,7 +526,7 @@ html, body {
 }
 
 .empty-sub {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
   line-height: 1.6;
   max-width: 400px;
@@ -542,7 +542,7 @@ html, body {
   border: 1px solid var(--border-bright);
   background: transparent;
   color: var(--text-secondary);
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -587,7 +587,7 @@ html, body {
   color: var(--text-primary);
   padding: 10px 14px;
   border-radius: 16px 16px 4px 16px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.65;
   border: 1px solid var(--border-mid);
   word-break: break-word;
@@ -642,7 +642,7 @@ html, body {
 .assistant-content { flex: 1; min-width: 0; }
 
 .assistant-label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 8px;
@@ -652,7 +652,7 @@ html, body {
 
 /* ── Rich message text ── */
 .message-text {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.72;
   color: var(--text-primary);
   word-break: break-word;
@@ -708,7 +708,7 @@ html, body {
   background: var(--red-dim);
   border: 1px solid rgba(176,82,82,0.18);
   color: var(--red);
-  font-size: 13.5px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -728,7 +728,7 @@ html, body {
 
 .error-hint {
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 13px;
   color: color-mix(in srgb, var(--red) 70%, transparent);
   font-style: italic;
 }
@@ -740,7 +740,7 @@ html, body {
   border-radius: var(--r-md);
   background: var(--amber-dim);
   border: 1px solid rgba(200,144,64,0.18);
-  font-size: 12.5px;
+  font-size: 14px;
   color: var(--amber);
   line-height: 1.45;
 }
@@ -1023,6 +1023,10 @@ html, body {
   border-radius: var(--r-sm);
 }
 
+.prompt-bar :focus-visible {
+  outline: none;
+}
+
 /* ============================================================
    UTILITY
    ============================================================ */
@@ -1143,4 +1147,3 @@ html, body {
   align-items: center;
   gap: 6px;
 }
-

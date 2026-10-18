@@ -14,7 +14,7 @@
   width: min(var(--pb-w), 100%);
   color: var(--pb-ink);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 22px;
 }
 
@@ -91,7 +91,7 @@
 
 .prompt-bar__row-name {
   flex: none;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
 }
 
@@ -100,7 +100,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--pb-muted);
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -109,7 +109,7 @@
   flex: none;
   margin-left: auto;
   color: var(--pb-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .prompt-bar__row-check {
@@ -130,7 +130,7 @@
   height: 36px;
   padding: 0 8px;
   color: var(--pb-muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .prompt-bar__field {
@@ -190,7 +190,7 @@
   padding: 0 4px 0 8px;
   border-radius: 8px;
   background: var(--pb-hover);
-  font-size: 12px;
+  font-size: 13px;
   animation: prompt-bar-pop 200ms var(--pb-ease-out) both;
 }
 
@@ -301,7 +301,7 @@
   border-radius: 8px;
   background: transparent;
   color: color-mix(in srgb, var(--pb-ink) 70%, transparent);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   transition:
     background-color 150ms ease,
@@ -337,7 +337,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 18px;
 }
 
@@ -360,7 +360,7 @@
   justify-content: space-between;
   margin-top: 12px;
   color: var(--pb-muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 16px;
 }
 
