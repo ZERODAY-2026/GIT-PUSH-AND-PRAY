@@ -22,14 +22,13 @@ const LOCAL_MODELS = [
 // Upload pipeline steps
 const UPLOAD_STEPS = [
   'Uploading document…',
-  'Extracting text from PDF…',
-  'Cleaning & chunking legal text…',
-  'Generating embeddings…',
+  'Extracting text from PDF (PyMuPDF)…',
+  'Conservative cleaning & semantic chunking…',
+  'Generating local embeddings (bge-small-en-v1.5)…',
   'Building FAISS vector index…',
   'Document ready — you can now ask questions!',
 ];
 
-/* ─────────────────────────────────────────────────────────── */
 /*  Theme hook                                                 */
 /* ─────────────────────────────────────────────────────────── */
 function useTheme() {
@@ -112,8 +111,32 @@ function IconFile() {
 }
 
 /* ─────────────────────────────────────────────────────────── */
-/*  Utility: render rich text (paragraphs + bullets + bold)   */
+/*  Utility: parse plain text into paragraphs / legal blocks   */
 /* ─────────────────────────────────────────────────────────── */
+function renderInlineWithCitations(text) {
+  // Replace [SOURCE X: ...] or [SOURCE X] with citation tags
+  const parts = text.split(/(\[SOURCE\s*\d+[^\]]*\])/g);
+  return parts.map((part, i) => {
+    if (/^\[SOURCE\s*\d+[^\]]*\]$/.test(part)) {
+      const label = part.replace(/^\[SOURCE\s*(\d+)[^\]]*\]$/, 'Source $1');
+      return (
+        <span key={i} className="citation-tag" title={part}>
+          📎 {label}
+        </span>
+      );
+    }
+    // Bold **text**
+    const subParts = part.split(/(\*\*[^*]+\*\*)/g);
+    return subParts.map((sub, j) =>
+      sub.startsWith('**') && sub.endsWith('**') ? (
+        <strong key={`${i}-${j}`}>{sub.slice(2, -2)}</strong>
+      ) : (
+        sub
+      )
+    );
+  });
+}
+
 function RichText({ text }) {
   if (!text) return null;
 
@@ -121,6 +144,50 @@ function RichText({ text }) {
   return (
     <div className="message-text">
       {paragraphs.map((para, pi) => {
+        const trimmed = para.trim();
+
+        // 1. Legal disclaimer box
+        if (trimmed.toLowerCase().includes('not legal advice; preliminary document triage only')) {
+          return (
+            <div key={pi} className="triage-disclaimer-box">
+              <span>⚖️</span>
+              <span>{trimmed}</span>
+            </div>
+          );
+        }
+
+        // 2. Structured section headers
+        if (trimmed.startsWith('### ')) {
+          const title = trimmed.replace(/^###\s*/, '');
+          let headerClass = 'explicit';
+          let icon = '📌';
+
+          if (/explicit/i.test(title)) {
+            headerClass = 'explicit';
+            icon = '📌';
+          } else if (/interpret|concern|risk/i.test(title)) {
+            headerClass = 'risk';
+            icon = '⚠️';
+          } else if (/jurisdiction|enforceab/i.test(title)) {
+            headerClass = 'jurisdiction';
+            icon = '🏛️';
+          } else if (/next step|escalat|recommend/i.test(title)) {
+            headerClass = 'next-steps';
+            icon = '💡';
+          } else if (/silent|silence/i.test(title)) {
+            headerClass = 'silence';
+            icon = '❓';
+          }
+
+          return (
+            <div key={pi} className={`legal-section-header ${headerClass}`}>
+              <span>{icon}</span>
+              <span>{title}</span>
+            </div>
+          );
+        }
+
+        // 3. Bullet blocks
         const lines = para.split('\n');
         const isBulletBlock =
           lines.length > 1 &&
@@ -130,23 +197,19 @@ function RichText({ text }) {
           return (
             <ul key={pi}>
               {lines.filter(Boolean).map((line, li) => (
-                <li key={li}>
-                  {line.replace(/^\s*[-*•]\s/, '').replace(/^\d+\.\s/, '')}
+                <li key={li} style={{ position: 'relative', paddingLeft: 16, marginBottom: 6 }}>
+                  <span style={{ position: 'absolute', left: 0, color: 'var(--accent-bright)', fontWeight: 700 }}>›</span>
+                  {renderInlineWithCitations(line.replace(/^\s*[-*•]\s/, '').replace(/^\d+\.\s/, ''))}
                 </li>
               ))}
             </ul>
           );
         }
 
-        // Bold **text** support
-        const parts = para.split(/(\*\*[^*]+\*\*)/g);
+        // 4. Standard paragraph
         return (
           <p key={pi}>
-            {parts.map((part, i) =>
-              part.startsWith('**') && part.endsWith('**')
-                ? <strong key={i}>{part.slice(2, -2)}</strong>
-                : part
-            )}
+            {renderInlineWithCitations(para)}
           </p>
         );
       })}

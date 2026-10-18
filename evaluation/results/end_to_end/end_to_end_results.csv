@@ -1,0 +1,6 @@
+example_id,document_id,category,is_positive,gold_found,gold_rank,pipeline_status,failure_stage,f1_score,groundedness_score
+LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement__Document Name,LohaCompanyltd_20191209_F-1_EX-10.16_119,Document Name,True,True,2,FAILURE,GROUNDING FAILURE,0.0,0.0
+LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement__Parties,LohaCompanyltd_20191209_F-1_EX-10.16_119,Parties,True,True,1,FAILURE,GROUNDING FAILURE,0.0,0.0
+LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement__Agreement Date,LohaCompanyltd_20191209_F-1_EX-10.16_119,Agreement Date,False,False,,FAILURE,RETRIEVAL FAILURE,1.0,0.0
+LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement__Effective Date,LohaCompanyltd_20191209_F-1_EX-10.16_119,Effective Date,False,False,,FAILURE,RETRIEVAL FAILURE,1.0,0.0
+LohaCompanyltd_20191209_F-1_EX-10.16_11917878_EX-10.16_Supply Agreement__Expiration Date,LohaCompanyltd_20191209_F-1_EX-10.16_119,Expiration Date,True,True,1,FAILURE,GROUNDING FAILURE,0.0792,0.0
