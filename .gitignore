@@ -24,20 +24,23 @@ htmlcov/
 
 # ── Legal documents — NEVER commit real documents to version control ─────────
 # Input PDFs may contain sensitive private information.
-data/input/*.pdf
-data/input/*.PDF
+**/data/input/*.pdf
+**/data/input/*.PDF
 
 # Extracted text outputs also contain sensitive content.
-data/extracted/*.txt
-data/extracted/*.json
+**/data/extracted/*.txt
+**/data/extracted/*.json
 
 # Processed and chunked text
-data/processed/*.json
+**/data/processed/*.json
 
 # Local vector store indices and metadata
-data/vector_store/*.faiss
-data/vector_store/*.json
-!data/vector_store/.gitkeep
+**/data/vector_store/*.faiss
+**/data/vector_store/*.json
+!**/data/vector_store/.gitkeep
+
+# ── Frontend dependencies ───────────────────────────────────────────────────
+**/node_modules/
 
 # ── IDE / OS ─────────────────────────────────────────────────────────────────
 .vscode/

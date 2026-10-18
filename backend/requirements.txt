@@ -17,6 +17,10 @@ faiss-cpu>=1.8.0
 
 # ── Testing ────────────────────────────────────────────────────────────────
 pytest>=8.0.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+rank-bm25>=0.2.2
 
 # ── Future modules (NOT installed yet — listed for reference only) ──────────
 # Uncomment when the corresponding pipeline stage is implemented:

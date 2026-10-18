@@ -4,6 +4,18 @@
 >
 > All processing happens on your machine. Sensitive legal documents, extracted text, chunks, embeddings, and indices never leave your device.
 
+This directory is the Python backend of the repository. A frontend can be
+placed alongside it at the repository root, for example:
+
+```text
+repository/
+├── backend/
+└── frontend/
+```
+
+Run backend commands from this directory so the `src` package and relative
+`data` paths resolve correctly.
+
 ---
 
 ## Project Overview
@@ -53,7 +65,7 @@ Local Gemma Query Reasoning + Citation + Calibrated Uncertainty
 ## Project Structure
 
 ```
-localize-legal-RAG/
+backend/
 │
 ├── data/
 │   ├── input/                  ← input PDFs (git-ignored)
@@ -90,7 +102,6 @@ localize-legal-RAG/
 │   └── test_pipeline.py        ← Pipeline integration test suite
 │
 ├── requirements.txt
-├── .gitignore
 └── README.md
 ```
 
@@ -104,13 +115,13 @@ Use **CPython 3.11** (or 3.10–3.12). Pre-built binary wheels for `pymupdf` and
 ### 1. Create a Virtual Environment
 
 ```powershell
-C:\Users\aayus\AppData\Local\Programs\Python\Python311\python.exe -m venv .venv311
+cd C:\Users\HARI\Downloads\Legal\backend
 ```
 
 ### 2. Install Dependencies
 
 ```powershell
-.venv311\Scripts\pip.exe install -r requirements.txt
+..\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
 Active runtime dependencies:
@@ -128,7 +139,7 @@ Active runtime dependencies:
 Place your PDF into `data/input/` and run:
 
 ```powershell
-.venv311\Scripts\python.exe -m src.ingestion.pdf_extractor data/input/trial.pdf
+..\.venv\Scripts\python.exe -m src.ingestion.pdf_extractor data/input/trial.pdf
 ```
 
 Outputs generated:
@@ -140,7 +151,7 @@ Outputs generated:
 Run the unified processing pipeline on the extracted JSON:
 
 ```powershell
-.venv311\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json
+..\.venv\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json
 ```
 
 Terminal output:
@@ -168,13 +179,114 @@ Saved:
 
 ```powershell
 # Custom chunk size and overlap
-.venv311\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --target-tokens 500 --overlap-tokens 75
+..\.venv\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --target-tokens 500 --overlap-tokens 75
 
 # Disable automatic header/footer removal
-.venv311\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --keep-headers
+..\.venv\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --keep-headers
 
 # Use a different local embedding model
-.venv311\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --model all-MiniLM-L6-v2
+..\.venv\Scripts\python.exe -m src.processing.pipeline data/extracted/trial.json --model all-MiniLM-L6-v2
+```
+
+## Frontend API
+
+The backend exposes a local FastAPI service for frontend integration. Start it
+from the project root:
+
+```powershell
+..\.venv\Scripts\python.exe -m uvicorn src.api:app --host 127.0.0.1 --port 8000 --reload
+```
+
+The default CORS origins are `http://localhost:3000` and
+`http://localhost:5173`. Override them with a comma-separated
+`API_CORS_ORIGINS` environment variable when needed.
+
+### Check service status
+
+```http
+GET http://127.0.0.1:8000/api/health
+```
+
+### Upload and index a PDF
+
+```http
+POST http://127.0.0.1:8000/api/documents/process
+Content-Type: multipart/form-data
+```
+
+The multipart field must be named `file`. Optional query parameters are
+`target_tokens`, `overlap_tokens`, and `model`. This endpoint performs PDF
+extraction, cleaning, legal-aware chunking, local embedding, and FAISS index
+persistence in one request.
+
+### Ask a question
+
+```http
+POST http://127.0.0.1:8000/api/query
+Content-Type: application/json
+```
+
+```json
+{
+  "question": "What notice is required for termination?",
+  "top_k": 5,
+  "min_score": 0.5,
+  "model": "google/gemma-4-e4b"
+}
+```
+
+The response contains `status`, `answer`, `best_score`, and citation-ready
+`sources` with chunk IDs, page ranges, sections, clauses, and scores. The
+`model` field is optional; otherwise `LM_STUDIO_MODEL` is used. LM Studio must
+be running at `http://127.0.0.1:1234/v1` or the URL in
+`LM_STUDIO_BASE_URL`.
+
+### Optional hybrid retrieval layer
+
+The existing `/api/query` endpoint is unchanged and continues to perform the
+current retrieval-plus-Gemma flow. The new evidence-only retrieval layer is
+opt-in and does not call Gemma.
+
+Build its separate BGE-M3/BM25 index from the existing canonical chunks:
+
+```powershell
+..\.venv\Scripts\python.exe -m src.retrieval.build_index `
+  --chunks data/vector_store/chunks.json `
+  --output data/vector_store/retrieval
+```
+
+This writes a separate retrieval index containing `index.faiss`,
+`mapping.json`, `chunks.json`, `index_metadata.json`, and `bm25/corpus.json`.
+The current index is not overwritten. BGE-M3 is downloaded by
+`sentence-transformers` if it is not already cached, then runs locally.
+
+Retrieve evidence without answer generation:
+
+```http
+POST http://127.0.0.1:8000/api/retrieve
+Content-Type: application/json
+```
+
+```json
+{
+  "query": "What is the termination notice period?",
+  "initial_k": 30,
+  "top_k": 5,
+  "rrf_k": 60,
+  "debug": false
+}
+```
+
+The response contains `results` with the canonical chunk metadata and
+`dense_score`, `bm25_score`, `rrf_score`, and `rerank_score`. Scores are
+ranking signals, not probabilities. Set `debug` to `true` to include dense,
+BM25, and fused rankings.
+
+The same retrieval flow is available from the CLI:
+
+```powershell
+..\.venv\Scripts\python.exe -m src.retrieval.query `
+  "What is the termination notice period?"
 ```
 
 ---
@@ -237,7 +349,7 @@ To prevent storing multi-megabyte dense vector arrays redundantly in JSON files:
 Execute all 59 tests covering extraction, cleaning, chunking, embeddings, vector indexing, and pipeline integration:
 
 ```powershell
-.venv311\Scripts\pytest.exe tests/ -v
+..\.venv\Scripts\python.exe -m pytest tests/ -v
 ```
 
 Test coverage includes:
